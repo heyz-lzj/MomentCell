@@ -10,5 +10,5 @@
 
 @interface LZJMomentTableViewCell : UITableViewCell
 - (void)updateWithData:(NSDictionary *)dict;
-}
+
 @end
