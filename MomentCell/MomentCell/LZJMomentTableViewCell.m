@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *commentBtn;
 @property (weak, nonatomic) IBOutlet UILabel *commentCountLbl;
 @property (weak, nonatomic) IBOutlet UIView *imagesContainer;
+@property (weak, nonatomic) IBOutlet UIView *commentContainer;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *commentViewConstraintHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imagesViewConstraintHeight;
@@ -57,11 +58,24 @@
     CGFloat iw = (width-8*2)/3;
     [dict[@"images"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         UIImageView *iv = [[UIImageView alloc]initWithFrame:CGRectMake(idx%3 * (8 + iw), idx/3 * (8 + iw), iw, iw)];
+        iv.layer.masksToBounds = YES;
+        iv.layer.cornerRadius = 5;
         iv.backgroundColor = [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:1];
         
         [_imagesContainer addSubview:iv];
     }];
     
+    NSInteger cHFactor = [dict[@"commentCount"] integerValue] % 3;
     
+    for (UIView *c in _commentContainer.subviews) {
+        [c removeFromSuperview];
+    }
+    for (NSInteger i = 0; i<cHFactor; i++) {
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(8, i *(40), 240, 40)];
+        label.text = [NSString stringWithFormat:@"评论:(%ld)",i+1 ];
+        
+        [_commentContainer addSubview:label];
+    }
+    _commentViewConstraintHeight.constant = cHFactor *40 + 1;
 }
 @end
